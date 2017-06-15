@@ -1,0 +1,44 @@
+
+target remote localhost:3333
+monitor halt
+layout asm
+layout regs
+layout src
+
+set remote hardware-breakpoint-limit 6
+set remote hardware-watchpoint-limit 4
+
+monitor poll on
+stepi
+
+
+#*********************************** Macros for ARM OpenOCD *************************************
+
+define bp
+  monitor bp $arg0 2 hw
+end
+
+define rbp
+  monitor rbp  $arg0
+end
+
+define lbp
+  monitor bp 
+end
+
+define halt
+  monitor halt
+  stepi
+end
+
+define go
+  monitor resume
+end
+
+define pollon
+  monitor poll on
+end
+
+define polloff
+  monitor poll off
+end
