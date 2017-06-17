@@ -16,23 +16,23 @@ _putc:
 	push { lr }
 	push { r1 }
 	push { r0 }
+
    	mov r1, sp
    	ldr r0, =0x03 
 	bkpt 0xab
+
 	pop { r0 }
-	pop  { r1 }
+	pop { r1 }
 	pop { pc }
 
 #***************************************************************************************************************************
 
 _puts:
-	push { lr }
-	push { r1 }
-	push { r0 }
-   	mov r1, r0
-   	ldr r0, =0x04
+	push { r1,r0,lr }
+
+   	mov r1,r0
+   	ldr r0,=0x04
 	bkpt 0xab
-	pop { r0 }
-	pop  { r1 }
-	pop { pc }
+
+	pop { r1,r0,pc }
 
