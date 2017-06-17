@@ -8,6 +8,8 @@
 #include "led.h"
 #include "stm32f4xx_hal.h"              // Keil::Device:STM32Cube HAL:Common
 
+extern void _putc(char ch);
+extern void _puts(char* string);
 
 //***************************************************************************************
 
@@ -300,14 +302,28 @@ SystemClock_Config();
   }
 }
 
+
+
+
 //***************************************************************************************
 
 
 void main(void)
 
-{
+{ int counter = 0;
+  char string[32];
 
-  can1_test();
+ // Disable STDOUT buffering. Otherwise nothing will be printed
+   // before a newline character or when the buffer is flushed.
+   // This MUST be done before any writes to STDOUT to have any effect...
+   setbuf(stdout, NULL);
+   fflush(stdout);
+    for(;;) 
+   {
+    sprintf(string,"Counter: %x\n",counter++);
+   _puts(string);
+   }
+//  can1_test();
 
 
 
