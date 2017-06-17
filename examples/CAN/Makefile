@@ -61,6 +61,7 @@ OBJECTS+=$(CXXSOURCES:%.cpp=%.o)
 BINELF=outp.elf
 BINHEX=outp.hex
 
+SEMIHOST=--specs=rdimon.specs -lc -lrdimon 
 ###
 # MCU FLAGS
 MCFLAGS=-mcpu=cortex-m4 -mthumb -mlittle-endian \
@@ -68,7 +69,7 @@ MCFLAGS=-mcpu=cortex-m4 -mthumb -mlittle-endian \
 # COMPILE FLAGS
 DEFS=-DTARGET_STM32F407 -D__CORTEX_M4 -D__FPU_PRESENT
 DEFS+=-DDEVICE_SERIAL -DSTDIO_UART_TX=PC_6 -DSTDIO_UART_RX=PC_7 -DSTDIO_UART=UART_6
-CFLAGS=-c $(MCFLAGS) $(DEFS) $(INCLUDES) -std=c99  -g
+CFLAGS=-c $(MCFLAGS) $(DEFS) $(INCLUDES) -std=c99  -g ${SEMIHOST}
 CXXFLAGS=-c $(MCFLAGS) $(DEFS) $(INCLUDES) -std=c++11
 CXXFLAGS+=-U__STRICT_ANSI__ # Undefine __STRICT_ANSI__ to compile Stream.cpp using c++11. This is a dirty hack!
 # LINKER FLAGS
@@ -138,7 +139,8 @@ deploy: release
 
 ddd:  release
 	rm -rf ~/.ddd
-	${OPENOCD_BIN} ${STM32_F4_CFG} ${OPENOCD_LOAD} > /dev/null 2>&1&
+#	${OPENOCD_BIN} ${STM32_F4_CFG} ${OPENOCD_LOAD} > /dev/null 2>&1&
+	${OPENOCD_BIN} ${STM32_F4_CFG} ${OPENOCD_LOAD} &
 	sleep ${LOAD_TIME}
 	ddd --debugger ${GDB} -s bin/$(BINELF) --directory=src -n -x  ddd.init
 #	${GDB} -s bin/$(BINELF)
