@@ -10,6 +10,10 @@
 .global _putc
 .global _puts
 
+.equ SYS_PUTC, 0x03
+.equ SYS_PUTS, 0x04
+.equ SEMIHOST, 0xab
+
 #***************************************************************************************************************************
 
 _putc:
@@ -18,8 +22,8 @@ _putc:
 	push { r0 }
 
    	mov r1, sp
-   	ldr r0, =0x03 
-	bkpt 0xab
+   	ldr r0, =SYS_PUTC
+	bkpt SEMIHOST
 
 	pop { r0 }
 	pop { r1 }
@@ -31,8 +35,8 @@ _puts:
 	push { r1,r0,lr }
 
    	mov r1,r0
-   	ldr r0,=0x04
-	bkpt 0xab
+   	ldr r0, =SYS_PUTS
+	bkpt SEMIHOST
 
 	pop { r1,r0,pc }
 
